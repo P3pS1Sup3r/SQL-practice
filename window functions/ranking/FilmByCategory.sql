@@ -1,3 +1,7 @@
+-- Анализировать популярность фильмов по категориям:
+-- Для каждой категории фильмов определите топ-5 самых часто арендуемых фильмов
+-- Используйте ранжирующие функции с секционированием по категориям
+
 WITH top_film_in_category AS (
     SELECT
         c.name,
@@ -19,5 +23,5 @@ WITH top_film_in_category AS (
 SELECT
 	*
 FROM top_film_in_category top
-WHERE top.film_rank_in_category <= 3
+WHERE top.film_rank_in_category <= 5
 LIMIT 30
