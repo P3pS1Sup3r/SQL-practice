@@ -2,3 +2,4 @@
 
 В рамках практики я работаю над следующими типами запросов:
 * [Оконные функции](https://github.com/P3pS1Sup3r/SQL-practice/tree/master/window%20functions). Ранжирующие, агрегирующие, функции смещения.
+* [Рекурсивные запросы](https://github.com/P3pS1Sup3r/SQL-practice/tree/master/recursive)
