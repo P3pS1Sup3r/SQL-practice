@@ -5,7 +5,7 @@ WITH RECURSIVE Subordinate AS (
         e.employee_id,
         CONCAT_WS(' ', e.first_name, e.last_name) AS name,
         e.salary,
-        e.employee_id AS head_employee_id,
+        e.employee_id AS anchor_employee_id,
         0 AS level
     FROM recursive.employee e
     UNION ALL
@@ -13,7 +13,7 @@ WITH RECURSIVE Subordinate AS (
         emp.employee_id,
         CONCAT_WS(' ', emp.first_name, emp.last_name) AS name,
         emp.salary,
-        s.head_employee_id AS head_employee_id,
+        s.anchor_employee_id AS anchor_employee_id,
         s.level + 1 AS level
     FROM recursive.employee emp
     JOIN Subordinate s ON (emp.manager_id = s.employee_id)
@@ -29,5 +29,5 @@ LEFT JOIN LATERAL (
         COUNT(s.employee_id) as subordinates_count,
         COALESCE(SUM(s.salary), 0) as subordinates_salary
     FROM Subordinate s
-    WHERE s.head_employee_id = e_base.employee_id AND s.level > 0
+    WHERE s.anchor_employee_id = e_base.employee_id AND s.level > 0
 ) subs ON true

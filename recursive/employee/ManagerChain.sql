@@ -5,7 +5,7 @@ WITH RECURSIVE Managers AS (
         emp.employee_id,
         CONCAT_WS(' ', emp.first_name, emp.last_name) as name,
         emp.manager_id,
-        emp.employee_id as head_employee_id,
+        emp.employee_id as anchor_employee_id,
         0 as level
     FROM recursive.employee emp
     UNION ALL
@@ -13,7 +13,7 @@ WITH RECURSIVE Managers AS (
         emp.employee_id,
         CONCAT_WS(' ', emp.first_name, emp.last_name) as name,
         emp.manager_id,
-        m.head_employee_id,
+        m.anchor_employee_id,
         m.level + 1 as level
     FROM recursive.employee emp
     JOIN Managers m ON (emp.employee_id = m.manager_id)
@@ -29,5 +29,5 @@ LEFT JOIN LATERAL (
         COALESCE(STRING_AGG(m.name, ' → '), 'Нет начальников') as managers_chain,
         COALESCE(MAX(m.level), 0) as employee_level
     FROM Managers m
-    WHERE e_base.employee_id = m.head_employee_id AND m.level > 0
+    WHERE e_base.employee_id = m.anchor_employee_id AND m.level > 0
 ) as employee_managers on TRUE
